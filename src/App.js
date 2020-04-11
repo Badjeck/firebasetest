@@ -11,18 +11,18 @@ function App() {
   React.useEffect(() => {
     const fetchData = async () => {
       const db = firebase.firestore();
-      db.collection("task")
+      db.collection("tasks")
         .onSnapshot(function(data) {
-          console.log(data)
           setTasks(data.docs.map(doc => ({ ...doc.data(), id: doc.id})))
         });
     }
     fetchData();
   },[]);
+  
 
   const onCreate = () => {
     const db = firebase.firestore();
-    db.collection("sacs").add({name: newTask});
+    db.collection("tasks").add({name: newTask});
   }
 
   const onDelete = (id) => {
@@ -34,7 +34,7 @@ function App() {
     const db = firebase.firestore()
     db.collection("tasks").doc(id).set({name:updateTask})
   }
-
+  
   return(
     <div>
       <Navbar bg = "dark" variant="dark">
@@ -73,6 +73,7 @@ function App() {
               <tbody>
                 {tasks.map(spell => (
                   <tr key = {spell.id}>
+                    <td>{spell.id}</td>
                     <td>{spell.name}</td>
                     <td>
                       <Button variant="danger" onClick={() => onDelete(spell.id)}>Delete Task</Button>
