@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import firebase from "./firebase";
+import { addToCart, viewCart, delById, removeCart } from "./context";
 import {Button,Row,Container,Col,Form,Navbar,Table} from 'react-bootstrap';
 
 function App() {
@@ -34,11 +35,11 @@ function App() {
     const db = firebase.firestore()
     db.collection("tasks").doc(id).set({name:updateTask})
   }
-  
+
   return(
     <div>
       <Navbar bg = "dark" variant="dark">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="#home"> 
           wallah c un titre
         </Navbar.Brand>
       </Navbar>
@@ -82,8 +83,16 @@ function App() {
                       <input type="text"  className=" " placeholder={spell.name} onChange={e => setUpdateTask(e.target.value)}></input>
                       <Button className="text-white ml-4" variant="warning" onClick={() => onUpdate(spell.id)}>updateTask</Button>
                     </td>
+                    <td>
+                      <Button onClick={() => addToCart(spell)}>Ajouter au panier</Button>
+                    </td>
+                    <td>
+                      <Button onClick={() => delById(spell.id)}>enlever du panier</Button>
+                    </td>
                   </tr>
                 ))}
+                <Button onClick={() => removeCart()}>Supprimer le panier</Button>
+                <Button onClick={() => viewCart()}>voir le panier</Button>
               </tbody>
             </Table>
           </Col>
